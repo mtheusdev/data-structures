@@ -16,36 +16,47 @@ class Stack<T> {
   // 💡 Dica 1: Que estrutura interna usar para guardar os elementos?
   // (descomente quando travar)
   // DICA: Use um array privado: private items: T[] = [];
+  private items: T[] = [];
+
+  constructor() {
+    this.items = [];
+  }
 
   // TODO: Implemente o constructor
 
   // TODO: Coloca um elemento no TOPO da pilha
   push(element: T): void {
-    // Sua implementação aqui
+    this.items.push(element);
   }
 
   // TODO: Remove e retorna o elemento do TOPO
   pop(): T | undefined {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+
     // Sua implementação aqui
-    return undefined;
+    return this.items.pop();
   }
 
   // TODO: Retorna o elemento do TOPO sem remover
   peek(): T | undefined {
-    // Sua implementação aqui
-    return undefined;
+    if (this.isEmpty()) {
+      return undefined;
+    }
+
+    return this.items[this.size() - 1];
   }
 
   // TODO: Retorna true se a pilha estiver vazia
   isEmpty(): boolean {
-    // Sua implementação aqui
-    return true;
+    return !this.items.length;
   }
 
   // TODO: Retorna o número de elementos na pilha
   size(): number {
     // Sua implementação aqui
-    return 0;
+    return this.items.length;
   }
 }
 
@@ -64,8 +75,27 @@ class Stack<T> {
 //    Quando encontrar um de fechamento, desempilhe e compare.
 
 function isValidParentheses(expression: string): boolean {
-  // Sua implementação aqui
-  return false;
+  const stack = new Stack<string>();
+
+  const pairs: Record<string, string> = {
+    ")": "(",
+    "]": "[",
+    "}": "{",
+  };
+
+  for (const char of expression) {
+    if (char === "(" || char === "[" || char === "{") {
+      stack.push(char);
+    } else if (char === ")" || char === "]" || char === "}") {
+      const popped = stack.pop();
+
+      if (pairs[char] !== popped) {
+        return false;
+      }
+    }
+  }
+
+  return stack.isEmpty();
 }
 
 // ============================================
