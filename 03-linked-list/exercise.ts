@@ -27,24 +27,82 @@ class LinkedList<T> {
   // TODO: Insere no INÍCIO — O(1)
   // 💡 Dica: newNode.next = this.head; this.head = newNode;
   insertAtHead(value: T): void {
-    // Sua implementação aqui
+    const newNode = new ListNode(value);
+
+    newNode.next = this.head;
+    this.head = newNode;
+    this.length++;
   }
 
   // TODO: Insere no FINAL — O(n)
   // 💡 Dica: Percorra até o último nó (current.next === null)
   insertAtTail(value: T): void {
-    // Sua implementação aqui
+    const newNode = new ListNode(value);
+    if (!this.head) {
+      this.head = newNode;
+      this.length++;
+      return;
+    }
+
+    let current = this.head;
+
+    while (current.next !== null) {
+      current = current.next;
+    }
+
+    current.next = newNode;
+    this.length++;
   }
 
   // TODO: Remove o PRIMEIRO nó — O(1)
   deleteAtHead(): T | undefined {
-    // Sua implementação aqui
-    return undefined;
+    if (!this.head) return undefined;
+
+    const toRemove = this.head.value;
+
+    this.head = this.head.next;
+    this.length--;
+
+    return toRemove;
+  }
+
+  deleteByValue(value: T): boolean {
+    if (!this.head) return false;
+
+    if (this.head.value === value) {
+      this.head = this.head.next;
+      this.length--;
+
+      return true;
+    }
+
+    let current = this.head;
+
+    while (current?.next) {
+      if (current.next.value === value) {
+        current.next = current.next.next;
+        this.length--;
+        return true;
+      }
+
+      current = current.next;
+    }
+
+    return false;
   }
 
   // TODO: Busca um valor — O(n)
   search(value: T): boolean {
-    // Sua implementação aqui
+    let current = this.head;
+
+    while (current) {
+      if (current.value === value) {
+        return true;
+      }
+
+      current = current.next;
+    }
+
     return false;
   }
 
@@ -52,12 +110,23 @@ class LinkedList<T> {
   // 💡 Dica: Use 3 ponteiros: prev, current, nextTemp
   //   A cada passo: salva o next, inverte a seta, avança os ponteiros
   reverse(): void {
-    // Sua implementação aqui
+    let prev = null;
+    let current = this.head;
+
+    while (current) {
+      const nextTemp = current.next;
+      current.next = prev;
+      prev = current;
+      current = nextTemp;
+    }
+
+    this.head = prev;
   }
 
   size(): number {
     return this.length;
   }
+
   isEmpty(): boolean {
     return this.length === 0;
   }
