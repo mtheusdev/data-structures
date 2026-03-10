@@ -17,35 +17,42 @@ class Queue<T> {
   // private headIndex = 0;
   // private tailIndex = 0;
 
+  private queue: T[] = [];
+
+  constructor() {
+    this.queue = [];
+  }
+
   // TODO: Implemente o constructor
 
   // TODO: Adiciona um elemento no FINAL da fila
   enqueue(element: T): void {
-    // Sua implementação aqui
+    this.queue.push(element);
   }
 
   // TODO: Remove e retorna o PRIMEIRO elemento da fila
   dequeue(): T | undefined {
-    // Sua implementação aqui
-    return undefined;
+    if (this.isEmpty()) return undefined;
+
+    return this.queue.shift();
   }
 
   // TODO: Retorna o PRIMEIRO elemento sem remover
   front(): T | undefined {
     // Sua implementação aqui
-    return undefined;
+    if (this.isEmpty()) return undefined;
+
+    return this.queue[0];
   }
 
   // TODO: Retorna true se a fila estiver vazia
   isEmpty(): boolean {
-    // Sua implementação aqui
-    return true;
+    return !this.queue.length;
   }
 
   // TODO: Retorna o número de elementos
   size(): number {
-    // Sua implementação aqui
-    return 0;
+    return this.queue.length;
   }
 }
 
