@@ -30,19 +30,78 @@ class DoublyLinkedList<T> {
 
   // TODO: Insere no INÍCIO — O(1)
   // 💡 Dica: newNode.next = this.head + this.head.prev = newNode
-  insertAtHead(value: T): void {}
+  insertAtHead(value: T): void {
+    const newNode = new DoublyNode(value);
+
+    if (!this.head) {
+      this.head = newNode;
+      this.tail = newNode;
+      this.length++;
+      return;
+    }
+
+    newNode.next = this.head;
+    this.head.prev = newNode;
+    this.head = newNode;
+    this.length++;
+
+    return;
+  }
 
   // TODO: Insere no FINAL — O(1) graças ao tail!
-  insertAtTail(value: T): void {}
+  insertAtTail(value: T): void {
+    const newNode = new DoublyNode(value);
+
+    if (!this.tail) {
+      this.head = newNode;
+      this.tail = newNode;
+      this.length++;
+      return;
+    }
+
+    newNode.prev = this.tail;
+    this.tail.next = newNode;
+    this.tail = newNode;
+
+    this.length++;
+
+    return;
+  }
 
   // TODO: Remove o PRIMEIRO — O(1)
   deleteAtHead(): T | undefined {
-    return undefined;
+    if (!this.head) return undefined;
+
+    const removedValue = this.head.value;
+
+    if (this.head === this.tail) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      this.head = this.head.next;
+      this.head!.prev = null;
+    }
+
+    this.length--;
+    return removedValue;
   }
 
   // TODO: Remove o ÚLTIMO — O(1) graças ao tail!
   deleteAtTail(): T | undefined {
-    return undefined;
+    if (!this.tail) return undefined;
+
+    const removedValue = this.tail.value;
+
+    if (this.head === this.tail) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      this.tail = this.tail.prev;
+      this.tail!.next = null;
+    }
+
+    this.length--;
+    return removedValue;
   }
 
   size(): number {
