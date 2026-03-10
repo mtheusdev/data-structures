@@ -9,17 +9,137 @@ Uma **Linked List** é uma coleção de "nós" ligados, onde cada nó guarda:
 
 Diferente de um Array, os nós **não precisam estar lado a lado na memória**.
 
+## Analogia do Mundo Real
+
+```
+  🚂 TREM:
+
+  Cada vagão (nó) se conecta ao próximo por um engate (ponteiro).
+  Para chegar no 3° vagão, você TEM que passar pelo 1° e 2° primeiro.
+
+  ┌─────────┐    ┌─────────┐    ┌─────────┐    ┌─────────┐
+  │ Vagão 1 │───→│ Vagão 2 │───→│ Vagão 3 │───→│ Vagão 4 │───→ ✕
+  └─────────┘    └─────────┘    └─────────┘    └─────────┘   (null)
+       ↑
+  Locomotiva
+   (head)
+```
+
+## Estrutura de um Nó
+
+```
+  ┌───────────────────────┐
+  │         Nó            │
+  │  ┌───────┬──────────┐ │
+  │  │ valor │   next ──────→  (próximo nó ou null)
+  │  │  42   │    *     │ │
+  │  └───────┴──────────┘ │
+  └───────────────────────┘
+```
+
 ## Visualização
 
 ```
   head
    ↓
-  [5] → [10] → [20] → [30] → null
+  ┌────┬──┐    ┌────┬──┐    ┌────┬──┐    ┌────┬──┐
+  │  5 │ ─┼───→│ 10 │ ─┼───→│ 20 │ ─┼───→│ 30 │ ─┼───→ null
+  └────┴──┘    └────┴──┘    └────┴──┘    └────┴──┘
+   valor next   valor next   valor next   valor next
 ```
 
-Cada caixinha `[X]` é um nó. A seta `→` é o ponteiro `next`.
+## Operações Visualizadas
+
+### Inserir no início — O(1)
+
+```
+  ANTES:
+  head → [10] → [20] → [30] → null
+
+  insertAtHead(5):
+  1. Cria novo nó [5]
+  2. [5].next = head (aponta pro antigo primeiro)
+  3. head = [5]
+
+  DEPOIS:
+  head → [5] → [10] → [20] → [30] → null
+          ↑
+        novo!
+```
+
+### Inserir no final — O(n)
+
+```
+  ANTES:
+  head → [10] → [20] → [30] → null
+
+  insertAtTail(40):
+  1. Percorre até o último nó [30]    ← precisa andar tudo! O(n)
+  2. [30].next = novo nó [40]
+
+  DEPOIS:
+  head → [10] → [20] → [30] → [40] → null
+                                 ↑
+                               novo!
+```
+
+### Deletar no início — O(1)
+
+```
+  ANTES:
+  head → [10] → [20] → [30] → null
+
+  deleteAtHead():
+  1. head = head.next
+
+  DEPOIS:           💨 [10] removido (garbage collected)
+  head → [20] → [30] → null
+```
+
+### Deletar por valor — O(n)
+
+```
+  ANTES:
+  head → [10] → [20] → [30] → null
+
+  deleteByValue(20):
+  1. Percorre até achar 20
+  2. O nó anterior [10].next = [20].next
+
+  DEPOIS:
+  head → [10] ─────→ [30] → null
+                 ↑
+          💨 [20] pulado/removido
+```
+
+### Reverter — O(n)
+
+```
+  ANTES:
+  head → [1] → [2] → [3] → null
+
+  Passo 1:  null ← [1]   [2] → [3] → null
+  Passo 2:  null ← [1] ← [2]   [3] → null
+  Passo 3:  null ← [1] ← [2] ← [3]
+                                  ↑
+  DEPOIS:                       head
+  head → [3] → [2] → [1] → null
+```
 
 ## Array vs Linked List
+
+```
+  ARRAY (acesso direto por índice):
+  ┌────┬────┬────┬────┬────┐
+  │ 10 │ 20 │ 30 │ 40 │ 50 │    array[2] = 30  ← O(1)!
+  └────┴────┴────┴────┴────┘
+   [0]  [1]  [2]  [3]  [4]
+
+  LINKED LIST (acesso sequencial):
+  [10] → [20] → [30] → [40] → [50] → null
+                  ↑
+  Para chegar aqui, passou por [10] e [20] ← O(n)!
+```
 
 | Característica     |       Array        | Linked List |
 | ------------------ | :----------------: | :---------: |

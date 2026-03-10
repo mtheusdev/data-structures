@@ -4,18 +4,99 @@
 
 Explora o grafo indo o **mais fundo possível** antes de voltar. Como entrar num labirinto: segue um caminho até o final, se bater numa parede, volta e tenta outro.
 
-## Visualização
+## Analogia do Mundo Real
 
 ```
-  Grafo:          Ordem DFS a partir de A:
-  A --- B --- D     A → B → D → E → F → C
-  |     |
-  C     E --- F
+  🏰 LABIRINTO:
 
-  (Mergulha até o fundo de cada ramo antes de ir pro próximo)
+  Você entra e segue sempre em frente.
+  Quando bate numa parede, VOLTA e tenta outro caminho.
+
+  ┌───────┬───────────┐
+  │ START │           │
+  │   ↓   │   ┌───┐   │
+  │   ↓   │   │   │   │
+  │   ↓───────→   │   │
+  │       │   │   ↓   │
+  │   ┌───┤   │   ↓   │
+  │   │   │   │  END  │
+  └───┴───┴───┴───────┘
+
+  Se chegar num beco sem saída → VOLTA (backtrack)
+  e tenta outro caminho!
 ```
 
-## Duas formas de implementar
+## Visualização Passo a Passo
+
+```
+  Grafo:
+       A ─── B ─── D
+       |     |
+       C     E ─── F
+
+  DFS a partir de A (usa uma PILHA/Stack):
+
+  ═══════════════════════════════════════════════════════
+  PASSO     PILHA           VISITADOS          AÇÃO
+  ═══════════════════════════════════════════════════════
+  Início    [A]             {}                 Começa por A
+  1         [C, B]          {A}                Visita A, empilha vizinhos
+  2         [C, E, D]       {A, B}             Visita B, empilha vizinhos
+  3         [C, E, F]       {A, B, D}          Visita D (sem vizinhos novos)
+                                                empilha F
+  4         [C, E]          {A, B, D, F}       Visita F
+  5         [C]             {A, B, D, F, E}    Visita E
+  6         []              {A, B, D, F, E, C} Visita C → FIM!
+
+  Ordem: A → B → D → F → E → C
+
+  ─────────────────────────────────────────────────────
+
+  Visualização do "mergulho":
+
+       A                     A ←── começa aqui
+      / \                    ↓
+     B   C                   B ←── mergulha
+    /|                       ↓
+   D  E                     D ←── mais fundo!
+      |                      ↑ volta (beco sem saída)
+      F                     E ←── tenta outro caminho
+                             ↓
+                            F ←── mais fundo!
+                             ↑ volta
+                            C ←── finalmente visita C
+```
+
+## DFS Recursiva vs Iterativa
+
+```
+  RECURSIVA (usa a call stack do JavaScript):
+
+  function dfs(node):
+    visitar(node)
+    para cada vizinho:
+      se não visitado:
+        dfs(vizinho)    ← chamada recursiva = empilha na call stack
+
+  Call Stack:
+  ┌─────────┐
+  │  dfs(D) │ ← topo (executando agora)
+  ├─────────┤
+  │  dfs(B) │
+  ├─────────┤
+  │  dfs(A) │ ← base (primeira chamada)
+  └─────────┘
+
+  ─────────────────────────────────────────────────
+
+  ITERATIVA (usa uma Stack explícita):
+
+  stack = [A]
+  enquanto stack não vazia:
+    node = stack.pop()
+    visitar(node)
+    empilha vizinhos de node
+```
 
 | Implementação | Como funciona                                  |
 | ------------- | ---------------------------------------------- |
