@@ -9,7 +9,23 @@ export {};
 // TODO: Busca binária ITERATIVA
 // Retorna o ÍNDICE do target no array ordenado, ou -1 se não encontrar
 // 💡 Dica: Use dois ponteiros (left, right). Calcule o mid. Compare.
+
+//  [2, 5, 8, 12, 16, 23, 38, 45, 56, 72, 91] target =5
+
 function binarySearch(arr: number[], target: number): number {
+  let leftIndex = 0;
+  let rightIndex = arr.length;
+
+  while (leftIndex <= rightIndex) {
+    const midle = Math.floor((leftIndex + rightIndex) / 2);
+    if (arr[midle] === target) return midle;
+    if (arr[midle] < target) {
+      leftIndex = midle + 1;
+    } else {
+      rightIndex = midle - 1;
+    }
+  }
+
   // Sua implementação aqui
   return -1;
 }
